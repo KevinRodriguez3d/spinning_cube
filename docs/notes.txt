@@ -1,0 +1,36 @@
+mkdir -p build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build . -j
+./my_raylib_game
+
+1. mkdir -p build && cd build
+
+mkdir -p build → creates a folder called build in your project directory.
+
+-p means “no error if it already exists.”
+
+&& cd build → after creating it, change directory into build.
+👉 This is called an out-of-source build. It keeps compiled files separate from your source code.
+
+2. cmake -DCMAKE_BUILD_TYPE=Release ..
+
+cmake → runs the CMake build system generator.
+
+-DCMAKE_BUILD_TYPE=Release → tells CMake to configure for a Release build (optimized for speed, smaller size).
+
+Alternatives: Debug (includes debug symbols, slower but good for dev), RelWithDebInfo, MinSizeRel.
+
+.. → points CMake to the parent directory (your project root where CMakeLists.txt is).
+
+👉 This step generates build files (Makefiles, Ninja files, etc., depending on your setup).
+
+3. cmake --build . -j
+
+cmake --build . → compiles the project inside the current folder (. = build).
+
+-j → means “use all available CPU cores” for faster compilation.
+
+You could also use -j4 for 4 cores, -j8 for 8, etc.
+
+👉 This produces your executable binary.
+
