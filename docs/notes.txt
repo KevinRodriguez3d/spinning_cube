@@ -1,36 +1,54 @@
-mkdir -p build && cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build . -j
-./my_raylib_game
+==================================================
+ Raylib + Wayland + NVIDIA Development Setup Recap
+==================================================
 
-1. mkdir -p build && cd build
+1. Uninstall Arch repo raylib (to avoid Wayland issues).
 
-mkdir -p build → creates a folder called build in your project directory.
+2. Build raylib from source with external glfw-wayland:
+   ---------------------------------------------------
+   git clone https://github.com/raysan5/raylib
+   cd raylib
+   cmake -B build -DCMAKE_BUILD_TYPE=Release -DUSE_EXTERNAL_GLFW=ON
+   cmake --build build -j
+   sudo cmake --install build
 
--p means “no error if it already exists.”
+   -> Installs to /usr/local/lib and /usr/local/include
 
-&& cd build → after creating it, change directory into build.
-👉 This is called an out-of-source build. It keeps compiled files separate from your source code.
+3. Project CMakeLists setup:
+   --------------------------
+   find_package(raylib 5 REQUIRED)
+   add_executable(${PROJECT_NAME} ${SRC})
+   target_link_libraries(${PROJECT_NAME} PRIVATE raylib glfw)
+   target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_DESKTOP)
 
-2. cmake -DCMAKE_BUILD_TYPE=Release ..
+   Build project:
+   cmake -S . -B build -Draylib_DIR=/usr/local/lib/cmake/raylib
+   cmake --build build -j
 
-cmake → runs the CMake build system generator.
+4. Enable NVIDIA modeset:
+   -----------------------
+   Edit /boot/limine.conf → append to kernel_cmdline:
+   nvidia-drm.modeset=1
 
--DCMAKE_BUILD_TYPE=Release → tells CMake to configure for a Release build (optimized for speed, smaller size).
+5. Run using NVIDIA GPU:
+   ----------------------
+   prime-run ./build/your_project
 
-Alternatives: Debug (includes debug symbols, slower but good for dev), RelWithDebInfo, MinSizeRel.
 
-.. → points CMake to the parent directory (your project root where CMakeLists.txt is).
+==================================
+ Commands to Remember (Cheat Sheet)
+==================================
 
-👉 This step generates build files (Makefiles, Ninja files, etc., depending on your setup).
+# Build project
+cmake -S . -B build -Draylib_DIR=/usr/local/lib/cmake/raylib
+cmake --build build -j
 
-3. cmake --build . -j
+# Run on NVIDIA GPU
+prime-run ./build/your_project
 
-cmake --build . → compiles the project inside the current folder (. = build).
+# Check which GPU is active
+glxinfo -B | grep -E 'OpenGL vendor|OpenGL renderer'
 
--j → means “use all available CPU cores” for faster compilation.
-
-You could also use -j4 for 4 cores, -j8 for 8, etc.
-
-👉 This produces your executable binary.
+# Clean rebuild
+rm -rf build && cmake -S . -B build -Draylib_DIR=/usr/local/lib/cmake/raylib && cmake --build build -j
 

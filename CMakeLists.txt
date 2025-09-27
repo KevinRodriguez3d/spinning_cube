@@ -4,13 +4,19 @@ project(raylib_template LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Raylib from Arch packages provides a CMake config file
-find_package(raylib 5 REQUIRED)  # 5.x on Arch
+find_package(raylib CONFIG REQUIRED)
 
-# Collect sources (or list them explicitly instead of GLOB if you prefer)
+# Use pkg-config to pull GLFW and its transitive deps (Wayland/X11, xkbcommon, etc.)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GLFW3 REQUIRED IMPORTED_TARGET glfw3)
+
 file(GLOB_RECURSE SRC CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/sources/*.cpp")
-
 add_executable(${PROJECT_NAME} ${SRC})
-target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
-target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_DESKTOP)
+
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE
+    raylib
+    PkgConfig::GLFW3
+    m dl pthread                        # needed when raylib is static
+)
 

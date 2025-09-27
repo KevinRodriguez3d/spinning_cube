@@ -4,8 +4,10 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 1920;
-    const int screenHeight = 1080;
+    const int screenWidth = 1080;
+    const int screenHeight = 720;
+
+    SetConfigFlags(FLAG_VSYNC_HINT);
 
     InitWindow(screenWidth, screenHeight, "raylib template");
 
@@ -24,9 +26,10 @@ int main(void)
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-            ClearBackground(BLACK);
+            ClearBackground(RAYWHITE);
+            DrawFPS(10,10);
 
-            DrawText("WINDOW!", screenWidth/2 - 50, screenHeight/2, 100, RAYWHITE);
+            DrawText("WINDOW!", screenWidth/2 - 50, screenHeight/2, 100, RED);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
