@@ -1,3 +1,0 @@
-/home/pumpkinking/Work/Projects/kevin_raylib_template/build/CMakeFiles/my_raylib_game.dir
-/home/pumpkinking/Work/Projects/kevin_raylib_template/build/CMakeFiles/edit_cache.dir
-/home/pumpkinking/Work/Projects/kevin_raylib_template/build/CMakeFiles/rebuild_cache.dir

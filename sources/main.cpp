@@ -24,9 +24,9 @@ int main(void)
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(BLACK);
 
-            DrawText("WINDOW!", 190, 200, 20, LIGHTGRAY);
+            DrawText("WINDOW!", screenWidth/2 - 50, screenHeight/2, 100, RAYWHITE);
 
         EndDrawing();
         //----------------------------------------------------------------------------------

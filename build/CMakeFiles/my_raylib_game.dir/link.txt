@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/my_raylib_game.dir/link.d CMakeFiles/my_raylib_game.dir/sources/main.cpp.o -o my_raylib_game  /usr/lib/libraylib.so -L/usr/lib -lraylib
