@@ -27,6 +27,11 @@ int main(void) {
   Vector3 cubePosition = {0, 0, 0};
   float cubeRotation = {0.0};
   float rotationSpeed = {0};
+  Color cubeColor = GRAY;
+
+  //UI parameters
+  int activeDropDown {0};
+  bool dropEdit {false};
 
   //--------------------------------------------------------------------------------------
   // Main game loop
@@ -34,6 +39,33 @@ int main(void) {
     // Update
     //----------------------------------------------------------------------------------
     cubeRotation += (5.0 * rotationSpeed);
+
+    switch (activeDropDown) {
+        case 0:
+            cubeColor = GRAY;
+            break;
+        case 1:
+            cubeColor = RED;
+            break;
+        case 2:
+            cubeColor = GREEN;
+            break;
+        case 3:
+            cubeColor = BLUE;
+            break;
+        case 4:
+            cubeColor = PURPLE;
+            break;
+        case 5:
+            cubeColor = BEIGE;
+            break;
+        case 6:
+            cubeColor = BROWN;
+            break;
+        case 7:
+            cubeColor = VIOLET;
+            break;
+    }
     //----------------------------------------------------------------------------------
 
     // Draw
@@ -44,7 +76,7 @@ int main(void) {
 
         rlPushMatrix();
             rlRotatef(cubeRotation, 0, 1, 0);
-            DrawCube(cubePosition, 2, 2, 2, GRAY);
+            DrawCube(cubePosition, 2, 2, 2, cubeColor);
             DrawCubeWires(cubePosition, 2, 2, 2, BLACK);
         rlPopMatrix();
 
@@ -57,8 +89,12 @@ int main(void) {
     // slider
     GuiSlider((Rectangle){(float)(GetScreenWidth()/2.0)-150, ((float)GetScreenHeight()-60), 300, 10}, "0", "5", &rotationSpeed, 0.0, 5.0);
 
+    GuiSetStyle(DROPDOWNBOX, TEXT_SIZE, 30);
+    if(GuiDropdownBox({(float)(GetScreenWidth()/2.0)+250,50,200,30}, "Gray;Red;Green;Blue;Purple;Beige;Brown;Violet", &activeDropDown, dropEdit)) dropEdit = !dropEdit;
+
     EndDrawing();
     //----------------------------------------------------------------------------------
+
   }
   // De-Initialization
   //--------------------------------------------------------------------------------------
