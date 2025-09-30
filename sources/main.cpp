@@ -75,6 +75,11 @@ int main(void) {
     //------------------------------------------------------------------------------
     BeginDrawing();
     ClearBackground(RAYWHITE);
+    
+    //Draw Background
+    DrawRectangleGradientV(0, 0, GetScreenWidth(), GetScreenHeight(), GRAY, DARKGRAY);
+
+    // Slider control
     BeginMode3D(camera);
 
         rlPushMatrix();
@@ -89,10 +94,9 @@ int main(void) {
 
     DrawFPS(10, 10);
 
-    // Slider control
-    GuiSlider((Rectangle){(float)(GetScreenWidth()/2.0)-150, ((float)GetScreenHeight()-60), 300, 10}, "0", "1", &rotationSpeed, 0.0, 600.0);
+    GuiSlider((Rectangle){(float)(GetScreenWidth()/2.0)-400, ((float)GetScreenHeight()-50), 800, 30}, "0", "1", &rotationSpeed, 0.0, 600.0);
 
-    if(GuiDropdownBox({(float)(GetScreenWidth()/2.0)+250,50,200,30}, "Gray;Red;Green;Blue;Purple;Beige;Brown;Violet", &activeDropDown, dropEdit)) dropEdit = !dropEdit;
+    if(GuiDropdownBox({(float)(GetScreenWidth()/2.0)+250,50,200,50}, "Gray;Red;Green;Blue;Purple;Beige;Brown;Violet", &activeDropDown, dropEdit)) dropEdit = !dropEdit;
 
     EndDrawing();
     //------------------------------------------------------------------------------
