@@ -5,40 +5,43 @@
 #include "raygui.h"
 
 int main(void) {
+  //------------------------------------------------------------------------------
   // Initialization
-  //--------------------------------------------------------------------------------------
-  SetConfigFlags(FLAG_VSYNC_HINT);
-  SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-  SetConfigFlags(FLAG_MSAA_4X_HINT); // anti-aliasing
-  const int screenWidth = 1200;
-  const int screenHeight = 900;
-  SetTargetFPS(60);
-  InitWindow(screenWidth, screenHeight, "Spinning_Cube");
+  //------------------------------------------------------------------------------
+  const int screenWidth = 1920/2;
+  const int screenHeight = 1080/2;
+  SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
+  // SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+  InitWindow(screenWidth, screenHeight, "Spinning Cube");
+  SetTargetFPS(120);
 
-  // Camera set up
+  // Camera setup
   Camera3D camera = {0};
   camera.position = (Vector3){0, 10, 10};
   camera.target = (Vector3){0, 0, 0};
   camera.up = (Vector3){0, 1, 0};
-  camera.fovy = 60.0f;
+  camera.fovy = 45.0f;
   camera.projection = CAMERA_PERSPECTIVE;
 
-  // cube parameters
+  // Cube parameters
   Vector3 cubePosition = {0, 0, 0};
   float cubeRotation = {0.0};
   float rotationSpeed = {0};
   Color cubeColor = GRAY;
 
-  //UI parameters
+  // UI parameters
   int activeDropDown {0};
   bool dropEdit {false};
 
-  //--------------------------------------------------------------------------------------
+  GuiSetStyle(DROPDOWNBOX, TEXT_SIZE, 30);
+
+  //------------------------------------------------------------------------------
   // Main game loop
+  //------------------------------------------------------------------------------
   while (!WindowShouldClose()) {
     // Update
-    //----------------------------------------------------------------------------------
-    cubeRotation += (5.0 * rotationSpeed);
+    //------------------------------------------------------------------------------
+    cubeRotation += rotationSpeed * GetFrameTime();
 
     switch (activeDropDown) {
         case 0:
@@ -66,10 +69,10 @@ int main(void) {
             cubeColor = VIOLET;
             break;
     }
-    //----------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
 
     // Draw
-    //----------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
     BeginDrawing();
     ClearBackground(RAYWHITE);
     BeginMode3D(camera);
@@ -86,19 +89,19 @@ int main(void) {
 
     DrawFPS(10, 10);
 
-    // slider
-    GuiSlider((Rectangle){(float)(GetScreenWidth()/2.0)-150, ((float)GetScreenHeight()-60), 300, 10}, "0", "5", &rotationSpeed, 0.0, 5.0);
+    // Slider control
+    GuiSlider((Rectangle){(float)(GetScreenWidth()/2.0)-150, ((float)GetScreenHeight()-60), 300, 10}, "0", "1", &rotationSpeed, 0.0, 600.0);
 
-    GuiSetStyle(DROPDOWNBOX, TEXT_SIZE, 30);
     if(GuiDropdownBox({(float)(GetScreenWidth()/2.0)+250,50,200,30}, "Gray;Red;Green;Blue;Purple;Beige;Brown;Violet", &activeDropDown, dropEdit)) dropEdit = !dropEdit;
 
     EndDrawing();
-    //----------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
 
   }
-  // De-Initialization
-  //--------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------
+  // De-initialization
+  //------------------------------------------------------------------------------
   CloseWindow();
-  //--------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------
   return 0;
 }
