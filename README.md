@@ -8,5 +8,7 @@ works on Linux with Wayland
 
 ## 🚀 Features
 - spin a cube
-- Change cube color!
-<img width="1285" height="774" alt="image" src="https://github.com/user-attachments/assets/6776146f-dfa9-4aee-b9de-4442ef567b32" />
+- Change cube color
+- Change rotation axis
+<img width="1284" height="773" alt="image" src="https://github.com/user-attachments/assets/38a6210e-0ab5-44f7-9e22-88a6fd2ff66d" />
+
