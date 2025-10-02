@@ -5,6 +5,11 @@
 #define RAYGUI_IMPLEMENTATION // define once
 #include "raygui.h"
 
+void ResetCube (float *rotation,int *spins) {
+    *rotation = 0;
+    *spins += 1;
+}
+
 int main(void) {
   //------------------------------------------------------------------------------
   // Initialization
@@ -28,9 +33,13 @@ int main(void) {
   Vector3 cubePosition = {0, 0, 0};
   Vector3 cubeRotAxis = {0,0,0};
   float cubeRotation = {0.0};
+  float *cubeRotation_ptr = &cubeRotation;
   float rotationSpeed = {0};
   Color cubeColor = GRAY;
   Color cubeAxisColor = BLACK;
+
+  int spins{0};
+  int *spint_ptr = &spins;
 
   // UI parameters
   int activeDropDown {0};
@@ -48,6 +57,7 @@ int main(void) {
   while (!WindowShouldClose()) {
     // Update
     //------------------------------------------------------------------------------
+    const char* spinsText = TextFormat("SCORE:%i",spins);
     cubeRotation += rotationSpeed * GetFrameTime();
 
     switch (activeDropDown) {
@@ -106,6 +116,7 @@ int main(void) {
 
         rlPushMatrix();
             rlRotatef(cubeRotation, cubeRotAxis.x, cubeRotAxis.y, cubeRotAxis.z );
+            if(cubeRotation >= 360.0){ResetCube(cubeRotation_ptr, spint_ptr);}
             DrawCube(cubePosition, 2, 2, 2, cubeColor);
             DrawCubeWires(cubePosition, 2, 2, 2, BLACK);
         rlPopMatrix();
@@ -117,6 +128,7 @@ int main(void) {
     EndMode3D();
 
     DrawFPS(10, 10);
+    DrawText(spinsText, 300, 30, 30, GOLD);
 
 
     if(GuiCheckBox({10,200,20,20}, "X", &xAxis)) axis = 0;
